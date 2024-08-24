@@ -1,40 +1,33 @@
-import { Temporal } from "@js-temporal/polyfill"; // Import Temporal API
+import { Temporal } from "@js-temporal/polyfill";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import type { ExerciseSet } from "./models/ExerciseSet";
 
-export interface Lift {
-	id: string;
-	type: string;
-	weight: number;
-	reps: number;
-	date: string;
+interface Store {
+	exerciseSets: ExerciseSet[];
+	addExerciseSet: (lift: Omit<ExerciseSet, "id" | "date">) => void;
 }
 
-interface LiftStoreState {
-	lifts: Lift[];
-	addLift: (lift: Omit<Lift, "id" | "date">) => void;
-}
-
-export const useLiftStore = create<LiftStoreState>()(
+export const useStore = create<Store>()(
 	persist(
 		(set) => ({
-			lifts: [],
-			addLift: (lift) =>
+			exerciseSets: [],
+			addExerciseSet: (exerciseSet) =>
 				set((state) => ({
-					lifts: [
+					exerciseSets: [
 						{
-							...lift,
+							...exerciseSet,
 							id: uuid.v4().toString(),
 							date: Temporal.Now.plainDateTimeISO().toString(),
 						},
-						...state.lifts,
+						...state.exerciseSets,
 					],
 				})),
 		}),
 		{
-			name: "lift-store",
+			name: "exercise-set-stor2",
 			storage: createJSONStorage(() => AsyncStorage),
 		},
 	),

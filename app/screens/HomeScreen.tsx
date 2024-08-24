@@ -1,10 +1,11 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { Button, Text, View } from "react-native";
-import LiftList from "../containers/LiftList";
-import { useLiftStore } from "../store";
+import ExerciseSetList from "../containers/ExerciseSetList";
+import Exercise from "../models/Exercise";
+import { useStore } from "../store";
 
 const HomeScreen = () => {
-	const addLift = useLiftStore((state) => state.addLift);
+	const { addExerciseSet } = useStore();
 
 	return (
 		<View className="flex-1 items-center justify-center bg-gray-100">
@@ -18,15 +19,15 @@ const HomeScreen = () => {
 			<Button
 				title="Add Lift"
 				onPress={() =>
-					addLift({
-						type: "Squat",
-						weight: 100,
-						reps: 10,
+					addExerciseSet({
+						exercise: Exercise.BenchPress,
+						reps: 8,
+						weight: 150,
 					})
 				}
 			/>
 
-			<LiftList />
+			<ExerciseSetList />
 		</View>
 	);
 };
