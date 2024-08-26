@@ -29,6 +29,10 @@ const HomeScreen = () => {
 		}
 	};
 
+	const handleChangeWeight = (weight: number) => {
+		setWeight(weight.toString());
+	};
+
 	const isFormComplete = !!(selectedExercise && weight && reps);
 
 	const incrementReps = () => setReps((prev) => Math.min(prev + 1, 20));
@@ -42,7 +46,7 @@ const HomeScreen = () => {
 					onSelectExercise={setSelectedExercise}
 				/>
 
-				<WeightInput weight={weight} onChangeWeight={setWeight} />
+				<WeightInput onChangeWeight={handleChangeWeight} />
 
 				<RepsStepper
 					reps={reps}
