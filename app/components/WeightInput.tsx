@@ -5,6 +5,7 @@ import {
 	Text,
 	TextInput,
 	type TextInputFocusEventData,
+	TouchableOpacity,
 	View,
 } from "react-native";
 
@@ -27,9 +28,19 @@ const PlateStepper = ({
 }: PlateStepperProps) => {
 	return (
 		<View className="items-center">
-			<Button title="+" onPress={onPlateAdded} color="#007bff" />
-			<Text className="my-1.25">{`${plateWeight} lbs`}</Text>
-			<Button title="–" onPress={onPlateRemoved} color="#dc3545" />
+			<TouchableOpacity
+				className="bg-blue-500 px-2 py-1 rounded"
+				onPress={onPlateAdded}
+			>
+				<Text className="text-white">+</Text>
+			</TouchableOpacity>
+			<Text className="my-1.25">{plateWeight}</Text>
+			<TouchableOpacity
+				className="bg-red-400 px-2 py-1 rounded"
+				onPress={onPlateAdded}
+			>
+				<Text className="text-black">+</Text>
+			</TouchableOpacity>
 		</View>
 	);
 };
@@ -57,7 +68,7 @@ const WeightTextInput = ({ initialText, onBlurText }: WeightTextInputProps) => {
 			onChangeText={handleChangeText}
 			onBlur={() => onBlurText(text)}
 			placeholder="Enter weight (lbs)"
-			className="w-full p-3 bg-white rounded-lg shadow-sm"
+			className="w-full p-3 bg-white rounded-lg shadow-sm mb-2"
 		/>
 	);
 };
@@ -259,21 +270,21 @@ const WeightInput = ({
 	}
 
 	return (
-		<View className="mb-4">
+		<View className="mb-2">
 			<WeightTextInput
 				initialText={weight.toString()}
 				onBlurText={handleBlurText}
 			/>
-			<View className="flex-row items-center justify-center mb-4">
+			<View className="flex-row items-center justify-center mb-2">
 				{leftPlates.reverse()}
 				<Button
 					title="Barbell"
 					onPress={handleToggleBarbell}
-					color={isBarbellAdded ? "#007bff" : "#cccccc"} // Change color based on state
+					color={isBarbellAdded ? "#007bff" : "#cccccc"}
 				/>
 				{rightPlates}
 			</View>
-			<View className="flex-row justify-around my-2.5">
+			<View className="flex-row justify-around mb-2">
 				<PlateStepper
 					plateWeight={45}
 					onPlateAdded={() => handleAddWeight(45)}
