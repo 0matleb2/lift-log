@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-	Button,
-	type NativeSyntheticEvent,
-	Text,
-	TextInput,
-	type TextInputFocusEventData,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface WeightInputProps {
 	onChangeWeight: (weight: number) => void;
@@ -26,20 +18,51 @@ const PlateStepper = ({
 	onPlateAdded,
 	onPlateRemoved,
 }: PlateStepperProps) => {
+	const addButtonClasses: string[] = [];
+	const addTextClasses: string[] = [];
+	const removeButtonClasses: string[] = [];
+	const removeTextClasses: string[] = [];
+
+	if (plateWeight === 45 || plateWeight === 5) {
+		addButtonClasses.push(...["bg-blue-500", "border", "border-blue-700"]);
+		addTextClasses.push(...["text-white"]);
+		removeButtonClasses.push(
+			...["bg-blue-200", "border", "border-transparent"],
+		);
+	} else if (plateWeight === 35) {
+		addButtonClasses.push(...["bg-yellow-500", "border", "border-yellow-700"]);
+		addTextClasses.push(...["text-black"]);
+		removeButtonClasses.push(
+			...["bg-yellow-200", "border", "border-transparent"],
+		);
+	} else if (plateWeight === 25 || plateWeight === 2.5) {
+		addButtonClasses.push(...["bg-green-500", "border", "border-green-700"]);
+		addTextClasses.push(...["text-white"]);
+		removeButtonClasses.push(
+			...["bg-green-200", "border", "border-transparent"],
+		);
+	} else if (plateWeight === 10 || plateWeight === 1.25) {
+		addButtonClasses.push(...["bg-white", "border", "border-gray-400"]);
+		addTextClasses.push(...["text-black"]);
+		removeButtonClasses.push(
+			...["bg-gray-200", "border", "border-transparent"],
+		);
+	}
+
 	return (
 		<View className="items-center">
 			<TouchableOpacity
-				className="bg-blue-500 px-2 py-1 rounded"
+				className={`${addButtonClasses.join(" ")} px-2 rounded-full`}
 				onPress={onPlateAdded}
 			>
-				<Text className="text-white">+</Text>
+				<Text className={`${addTextClasses.join(" ")} text-lg`}>+</Text>
 			</TouchableOpacity>
-			<Text className="my-1.25">{plateWeight}</Text>
+			<Text className="my-1.25 text-lg">{plateWeight}</Text>
 			<TouchableOpacity
-				className="bg-red-400 px-2 py-1 rounded"
-				onPress={onPlateAdded}
+				className={`${removeButtonClasses.join(" ")} px-2 rounded-full`}
+				onPress={onPlateRemoved}
 			>
-				<Text className="text-black">+</Text>
+				<Text className={`${removeTextClasses.join(" ")} text-lg`}>–</Text>
 			</TouchableOpacity>
 		</View>
 	);
@@ -73,57 +96,22 @@ const WeightTextInput = ({ initialText, onBlurText }: WeightTextInputProps) => {
 	);
 };
 
-const WeightInput = ({
-	onChangeWeight,
-	initialWeight = 0,
-	initialBarbell = true,
-}: WeightInputProps) => {
-	const [weight, setWeight] = useState<number>(
-		initialBarbell && initialWeight < 45 ? 45 : initialWeight,
-	);
-	const [isBarbellAdded, setIsBarbellAdded] = useState(initialBarbell);
+type PlateCount = {
+	"45": number;
+	"35": number;
+	"25": number;
+	"10": number;
+	"5": number;
+	"2.5": number;
+	"1.25": number;
+};
 
-	const handleToggleBarbell = () => {
-		let updatedWeight = Number(
-			(weight + 45 * (isBarbellAdded ? -1 : 1)).toFixed(2),
-		);
-		if (updatedWeight < 0) {
-			updatedWeight = 0;
-		}
-		setIsBarbellAdded(!isBarbellAdded);
-		setWeight(updatedWeight);
-		onChangeWeight(updatedWeight);
-	};
+const getOptimizedPlateCounts = (plateWeight: number) => {
+	let weight = plateWeight;
 
-	const handleAddWeight = (weightToAdd: number) => {
-		const updatedWeight = Number((weight + weightToAdd).toFixed(2));
-		setWeight(updatedWeight);
-		onChangeWeight(updatedWeight);
-	};
-
-	const handleRemoveWeight = (weightToRemove: number) => {
-		let updatedWeight = Number((weight - weightToRemove).toFixed(2));
-
-		if (updatedWeight < 0) {
-			updatedWeight = 0;
-		}
-
-		setWeight(updatedWeight);
-		onChangeWeight(updatedWeight);
-	};
-
-	const handleBlurText = (text: string) => {
-		if (!text) {
-			setWeight(0);
-			return;
-		}
-		const updatedWeight = Number(Number.parseFloat(text).toFixed(2));
-		if (updatedWeight < 45) {
-			setIsBarbellAdded(false);
-		}
-		setWeight(updatedWeight);
-		onChangeWeight(updatedWeight);
-	};
+	if (weight < 0) {
+		weight = 0;
+	}
 
 	let fortyFivePlateCount = 0;
 	let thirtyFivePlateCount = 0;
@@ -131,37 +119,127 @@ const WeightInput = ({
 	let tenPlateCount = 0;
 	let fivePlateCount = 0;
 	let twoPointFivePlateCount = 0;
+	let onePointTwoFivePlateCount = 0;
 
-	if (isBarbellAdded) {
-		let plateWeight = weight - 45;
-		if (plateWeight < 0) {
-			plateWeight = 0;
+	fortyFivePlateCount = Math.floor(weight / 90) * 2;
+	let weightRemainder = weight % 90;
+	thirtyFivePlateCount = Math.floor(weightRemainder / 70) * 2;
+	weightRemainder = weightRemainder % 70;
+	twentyFivePlateCount = Math.floor(weightRemainder / 50) * 2;
+	weightRemainder = weightRemainder % 50;
+	tenPlateCount = Math.floor(weightRemainder / 20) * 2;
+	weightRemainder = weightRemainder % 20;
+	fivePlateCount = Math.floor(weightRemainder / 10) * 2;
+	weightRemainder = weightRemainder % 10;
+	twoPointFivePlateCount = Math.floor(weightRemainder / 5) * 2;
+	weightRemainder = weightRemainder % 5;
+	onePointTwoFivePlateCount = Math.floor(weightRemainder / 2.5) * 2;
+
+	return {
+		"45": fortyFivePlateCount,
+		"35": thirtyFivePlateCount,
+		"25": twentyFivePlateCount,
+		"10": tenPlateCount,
+		"5": fivePlateCount,
+		"2.5": twoPointFivePlateCount,
+		"1.25": onePointTwoFivePlateCount,
+	};
+};
+
+const getPlateWeight = (plateCounts: PlateCount) => {
+	return (
+		plateCounts["45"] * 45 +
+		plateCounts["35"] * 35 +
+		plateCounts["25"] * 25 +
+		plateCounts["10"] * 10 +
+		plateCounts["5"] * 5 +
+		plateCounts["2.5"] * 2.5
+	);
+};
+
+const WeightInput = ({
+	onChangeWeight,
+	initialWeight = 0,
+	initialBarbell = false,
+}: WeightInputProps) => {
+	const [weight, setWeight] = useState<number>(
+		initialBarbell && initialWeight < 45 ? 45 : initialWeight,
+	);
+	const [isBarbellAdded, setIsBarbellAdded] = useState(initialBarbell);
+	const [plateCounts, setPlateCounts] = useState(
+		getOptimizedPlateCounts(initialWeight - (initialBarbell ? 45 : 0)),
+	);
+
+	const handleToggleBarbell = () => {
+		const updatedIsBarbellAdded = !isBarbellAdded;
+		const updatedWeight =
+			getPlateWeight(plateCounts) + (updatedIsBarbellAdded ? 45 : 0);
+		setIsBarbellAdded(updatedIsBarbellAdded);
+		setWeight(updatedWeight);
+		onChangeWeight(updatedWeight);
+	};
+
+	const handleAddPlate = (plateWeight: number) => {
+		const updatedPlateCounts = { ...plateCounts };
+		const previousCount =
+			updatedPlateCounts[
+				plateWeight.toString() as keyof typeof updatedPlateCounts
+			];
+		updatedPlateCounts[
+			plateWeight.toString() as keyof typeof updatedPlateCounts
+		] = previousCount + 1;
+		const updatedWeight =
+			getPlateWeight(updatedPlateCounts) + (isBarbellAdded ? 45 : 0);
+		setPlateCounts(updatedPlateCounts);
+		setWeight(updatedWeight);
+		onChangeWeight(updatedWeight);
+	};
+
+	const handleRemovePlate = (plateWeight: number) => {
+		const updatedPlateCounts = { ...plateCounts };
+		const previousCount =
+			updatedPlateCounts[
+				plateWeight.toString() as keyof typeof updatedPlateCounts
+			];
+		if (previousCount === 0) {
+			return;
 		}
-		fortyFivePlateCount = Math.floor(plateWeight / 90) * 2;
-		let remainder = plateWeight % 90;
-		thirtyFivePlateCount = Math.floor(remainder / 70) * 2;
-		remainder = remainder % 70;
-		twentyFivePlateCount = Math.floor(remainder / 50) * 2;
-		remainder = remainder % 50;
-		tenPlateCount = Math.floor(remainder / 20) * 2;
-		remainder = remainder % 20;
-		fivePlateCount = Math.floor(remainder / 10) * 2;
-		remainder = remainder % 10;
-		twoPointFivePlateCount = Math.floor(remainder / 5) * 2;
-	} else {
-		const plateWeight = weight;
-		fortyFivePlateCount = Math.floor(plateWeight / 45);
-		let remainder = plateWeight % 45;
-		thirtyFivePlateCount = Math.floor(remainder / 35);
-		remainder = remainder % 35;
-		twentyFivePlateCount = Math.floor(remainder / 25);
-		remainder = remainder % 25;
-		tenPlateCount = Math.floor(remainder / 10);
-		remainder = remainder % 10;
-		fivePlateCount = Math.floor(remainder / 5);
-		remainder = remainder % 5;
-		twoPointFivePlateCount = Math.floor(remainder / 2.5);
-	}
+		const updatedWeight =
+			getPlateWeight(updatedPlateCounts) + (isBarbellAdded ? 45 : 0);
+		updatedPlateCounts[
+			plateWeight.toString() as keyof typeof updatedPlateCounts
+		] = previousCount - 1;
+		setPlateCounts(updatedPlateCounts);
+		setWeight(updatedWeight);
+		onChangeWeight(updatedWeight);
+	};
+
+	const handleBlurText = (text: string) => {
+		if (!text) {
+			setWeight(0);
+			setPlateCounts(getOptimizedPlateCounts(0));
+			return;
+		}
+		const updatedWeight = Number(Number.parseFloat(text).toFixed(2));
+		let updatedIsBarbellAdded = isBarbellAdded;
+		if (updatedWeight < 45) {
+			updatedIsBarbellAdded = false;
+		}
+		setPlateCounts(
+			getOptimizedPlateCounts(updatedWeight - (updatedIsBarbellAdded ? 45 : 0)),
+		);
+		setIsBarbellAdded(updatedIsBarbellAdded);
+		setWeight(updatedWeight);
+		onChangeWeight(updatedWeight);
+	};
+
+	const fortyFivePlateCount = plateCounts["45"];
+	const thirtyFivePlateCount = plateCounts["35"];
+	const twentyFivePlateCount = plateCounts["25"];
+	const tenPlateCount = plateCounts["10"];
+	const fivePlateCount = plateCounts["5"];
+	const twoPointFivePlateCount = plateCounts["2.5"];
+	const onePointTwoFivePlateCount = plateCounts["1.25"];
 
 	const leftPlates = [];
 	const rightPlates = [];
@@ -171,14 +249,14 @@ const WeightInput = ({
 			leftPlates.push(
 				<View
 					key={`45L-${i}`}
-					className="w-3 h-14 bg-blue-500 border border-blue-600"
+					className="w-2.5 h-16 bg-blue-500 border-b-8 border-b-blue-700 border-x border-x-blue-600 border-t-8 border-t-blue-400"
 				/>,
 			);
 		} else {
 			rightPlates.push(
 				<View
 					key={`45R-${i}`}
-					className="w-3 h-14 bg-blue-500 border border-blue-600"
+					className="w-2.5 h-16 bg-blue-500 border-b-8 border-b-blue-700 border-x border-x-blue-600 border-t-8 border-t-blue-400"
 				/>,
 			);
 		}
@@ -188,14 +266,14 @@ const WeightInput = ({
 			leftPlates.push(
 				<View
 					key={`35L-${i}`}
-					className="w-3 h-12 bg-yellow-500 border border-yellow-600"
+					className="w-2.5 h-14 bg-yellow-500 border-b-8 border-b-yellow-700 border-x border-x-yellow-600 border-t-8 border-t-yellow-400"
 				/>,
 			);
 		} else {
 			rightPlates.push(
 				<View
 					key={`35R-${i}`}
-					className="w-3 h-12 bg-yellow-500 border border-yellow-600"
+					className="w-2.5 h-14 bg-yellow-500 border-b-8 border-b-yellow-700 border-x border-x-yellow-600 border-t-8 border-t-yellow-400"
 				/>,
 			);
 		}
@@ -205,14 +283,14 @@ const WeightInput = ({
 			leftPlates.push(
 				<View
 					key={`25L-${i}`}
-					className="w-3 h-10 bg-green-500 border border-green-600"
+					className="w-2.5 h-12 bg-green-500 border-b-8 border-b-green-700 border-x border-x-green-600 border-t-8 border-t-green-400"
 				/>,
 			);
 		} else {
 			rightPlates.push(
 				<View
 					key={`25R-${i}`}
-					className="w-3 h-10 bg-green-500 border border-green-600"
+					className="w-2.5 h-12 bg-green-500 border-b-8 border-b-green-700 border-x border-x-green-600 border-t-8 border-t-green-400"
 				/>,
 			);
 		}
@@ -222,14 +300,14 @@ const WeightInput = ({
 			leftPlates.push(
 				<View
 					key={`10L-${i}`}
-					className="w-2 h-8 bg-white border border-gray-400"
+					className="w-2 h-10 bg-gray-50 border-b-8 border-b-gray-400 border-x border-x-slate-400 border-t-8 border-t-gray-200"
 				/>,
 			);
 		} else {
 			rightPlates.push(
 				<View
 					key={`10R-${i}`}
-					className="w-2 h-8 bg-white border border-gray-400"
+					className="w-2 h-10 bg-gray-50 border-b-8 border-b-gray-400 border-x border-x-slate-400 border-t-8 border-t-gray-200"
 				/>,
 			);
 		}
@@ -239,14 +317,14 @@ const WeightInput = ({
 			leftPlates.push(
 				<View
 					key={`5L-${i}`}
-					className="w-2 h-6 bg-blue-500 border border-blue-600"
+					className="w-1.5 h-7 bg-blue-500 border-b-8 border-b-blue-700 border-x border-x-blue-600 border-t-8 border-t-blue-400"
 				/>,
 			);
 		} else {
 			rightPlates.push(
 				<View
 					key={`5R-${i}`}
-					className="w-2 h-6 bg-blue-500 border border-blue-600"
+					className="w-1.5 h-7 bg-blue-500 border-b-8 border-b-blue-700 border-x border-x-blue-600 border-t-8 border-t-blue-400"
 				/>,
 			);
 		}
@@ -256,18 +334,37 @@ const WeightInput = ({
 			leftPlates.push(
 				<View
 					key={`2.5L-${i}`}
-					className="w-2 h-4 bg-green-500 border border-green-600"
+					className="w-1.5 h-5 bg-green-500 border-b-4 border-b-green-700 border-x border-x-green-600 border-t-4 border-t-green-400"
 				/>,
 			);
 		} else {
 			rightPlates.push(
 				<View
 					key={`2.5R-${i}`}
-					className="w-2 h-4 bg-green-500 border border-green-600"
+					className="w-1.5 h-5 bg-green-500 border-b-4 border-b-green-700 border-x border-x-green-600 border-t-4 border-t-green-400"
 				/>,
 			);
 		}
 	}
+	for (let i = 0; i < onePointTwoFivePlateCount; i++) {
+		if (i % 2 === 0) {
+			leftPlates.push(
+				<View
+					key={`1.25L-${i}`}
+					className="w-1.5 h-4  bg-gray-50 border-b-4 border-b-gray-400 border-x border-x-slate-400 border-t-4 border-t-gray-200"
+				/>,
+			);
+		} else {
+			rightPlates.push(
+				<View
+					key={`1.25R-${i}`}
+					className="w-1.5 h-4  bg-gray-50 border-b-4 border-b-gray-400 border-x border-x-slate-400 border-t-4 border-t-gray-200"
+				/>,
+			);
+		}
+	}
+
+	const isPlateViewAccurate = weight % 2.5 === 0;
 
 	return (
 		<View className="mb-2">
@@ -275,45 +372,62 @@ const WeightInput = ({
 				initialText={weight.toString()}
 				onBlurText={handleBlurText}
 			/>
-			<View className="flex-row items-center justify-center mb-2">
+			<View
+				className={`mb-2 p-2 min-h-16 flex-row items-center justify-center border rounded-xl ${isPlateViewAccurate ? "border-transparent" : "border-red-300 bg-red-50"}`}
+			>
 				{leftPlates.reverse()}
-				<Button
-					title="Barbell"
-					onPress={handleToggleBarbell}
-					color={isBarbellAdded ? "#007bff" : "#cccccc"}
-				/>
+				{getPlateWeight(plateCounts) !== 0 && (
+					<View
+						className={`${isBarbellAdded ? "flex-1" : "w-6"} h-2.5 bg-slate-300 border-b-2 border-slate-400 border-t-2 border-t-slate-200`}
+					/>
+				)}
 				{rightPlates}
 			</View>
 			<View className="flex-row justify-around mb-2">
+				<TouchableOpacity
+					onPress={handleToggleBarbell}
+					className={`p-1 rounded-full border ${isBarbellAdded ? "bg-gray-300 border-gray-500" : "bg-gray-200 border-transparent"} justify-center`}
+				>
+					{isBarbellAdded ? (
+						<Text className="text-2xl">🏋️</Text>
+					) : (
+						<Text className="text-2xl opacity-50">🏋️</Text>
+					)}
+				</TouchableOpacity>
 				<PlateStepper
 					plateWeight={45}
-					onPlateAdded={() => handleAddWeight(45)}
-					onPlateRemoved={() => handleRemoveWeight(45)}
+					onPlateAdded={() => handleAddPlate(45)}
+					onPlateRemoved={() => handleRemovePlate(45)}
 				/>
 				<PlateStepper
 					plateWeight={35}
-					onPlateAdded={() => handleAddWeight(35)}
-					onPlateRemoved={() => handleRemoveWeight(35)}
+					onPlateAdded={() => handleAddPlate(35)}
+					onPlateRemoved={() => handleRemovePlate(35)}
 				/>
 				<PlateStepper
 					plateWeight={25}
-					onPlateAdded={() => handleAddWeight(25)}
-					onPlateRemoved={() => handleRemoveWeight(25)}
+					onPlateAdded={() => handleAddPlate(25)}
+					onPlateRemoved={() => handleRemovePlate(25)}
 				/>
 				<PlateStepper
 					plateWeight={10}
-					onPlateAdded={() => handleAddWeight(10)}
-					onPlateRemoved={() => handleRemoveWeight(10)}
+					onPlateAdded={() => handleAddPlate(10)}
+					onPlateRemoved={() => handleRemovePlate(10)}
 				/>
 				<PlateStepper
 					plateWeight={5}
-					onPlateAdded={() => handleAddWeight(5)}
-					onPlateRemoved={() => handleRemoveWeight(5)}
+					onPlateAdded={() => handleAddPlate(5)}
+					onPlateRemoved={() => handleRemovePlate(5)}
 				/>
 				<PlateStepper
 					plateWeight={2.5}
-					onPlateAdded={() => handleAddWeight(2.5)}
-					onPlateRemoved={() => handleRemoveWeight(2.5)}
+					onPlateAdded={() => handleAddPlate(2.5)}
+					onPlateRemoved={() => handleRemovePlate(2.5)}
+				/>
+				<PlateStepper
+					plateWeight={1.25}
+					onPlateAdded={() => handleAddPlate(1.25)}
+					onPlateRemoved={() => handleRemovePlate(1.25)}
 				/>
 			</View>
 		</View>
