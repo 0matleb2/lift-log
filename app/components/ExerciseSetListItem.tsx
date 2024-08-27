@@ -25,24 +25,10 @@ const ExerciseSetListItem = ({ exerciseSet }: ExerciseSetListItemProps) => {
 						minute: "numeric",
 					})}
 				</Text>
-
-				<Text className="text-xs text-gray-600 mt-1">
-					<Text className="font-semibold">Primary: </Text>
-					{exerciseSet.exercise.primaryMuscles
-						.map((muscle) => muscle.name)
-						.join(", ")}
-				</Text>
-
-				<Text className="text-xs text-gray-500 mt-1">
-					<Text className="font-semibold">Secondary: </Text>
-					{exerciseSet.exercise.secondaryMuscles
-						.map((muscle) => muscle.name)
-						.join(", ")}
-				</Text>
 			</View>
 			<View className="flex-col items-end ml-4">
 				<Text className="text-xl font-bold text-gray-800">
-					{exerciseSet.weight} kg
+					{exerciseSet.weight} lbs
 				</Text>
 				<Text className="text-sm text-gray-600">x {exerciseSet.reps} reps</Text>
 			</View>

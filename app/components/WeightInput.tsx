@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface WeightInputProps {
@@ -75,9 +75,16 @@ interface WeightTextInputProps {
 
 const WeightTextInput = ({ initialText, onBlurText }: WeightTextInputProps) => {
 	const [text, setText] = useState(initialText);
+	const textInputRef = useRef<TextInput>(null);
 
 	const handleChangeText = (text: string) => {
 		setText(text);
+	};
+
+	const handleFocusInput = () => {
+		if (textInputRef.current) {
+			textInputRef.current.focus();
+		}
 	};
 
 	useEffect(() => {
@@ -85,14 +92,21 @@ const WeightTextInput = ({ initialText, onBlurText }: WeightTextInputProps) => {
 	}, [initialText]);
 
 	return (
-		<TextInput
-			keyboardType="numeric"
-			value={text}
-			onChangeText={handleChangeText}
-			onBlur={() => onBlurText(text)}
-			placeholder="Enter weight (lbs)"
-			className="w-full p-3 bg-white rounded-lg shadow-sm mb-2"
-		/>
+		<TouchableOpacity
+			className="flex-1 flex-row items-center bg-white rounded-lg p-3"
+			onPress={handleFocusInput}
+		>
+			<TextInput
+				ref={textInputRef}
+				keyboardType="numeric"
+				value={text}
+				onChangeText={handleChangeText}
+				onBlur={() => onBlurText(text)}
+				placeholder="Enter weight (lbs)"
+				className="flex-1 bg-white rounded-lg text-lg"
+			/>
+			<Text className="text-lg">lbs</Text>
+		</TouchableOpacity>
 	);
 };
 
@@ -153,7 +167,8 @@ const getPlateWeight = (plateCounts: PlateCount) => {
 		plateCounts["25"] * 25 +
 		plateCounts["10"] * 10 +
 		plateCounts["5"] * 5 +
-		plateCounts["2.5"] * 2.5
+		plateCounts["2.5"] * 2.5 +
+		plateCounts["1.25"] * 1.25
 	);
 };
 
@@ -175,6 +190,17 @@ const WeightInput = ({
 		const updatedWeight =
 			getPlateWeight(plateCounts) + (updatedIsBarbellAdded ? 45 : 0);
 		setIsBarbellAdded(updatedIsBarbellAdded);
+		setWeight(updatedWeight);
+		onChangeWeight(updatedWeight);
+	};
+
+	const handleOptimizePlates = () => {
+		const updatedPlateCounts = getOptimizedPlateCounts(
+			weight - (isBarbellAdded ? 45 : 0),
+		);
+		const updatedWeight =
+			getPlateWeight(updatedPlateCounts) + (isBarbellAdded ? 45 : 0);
+		setPlateCounts(updatedPlateCounts);
 		setWeight(updatedWeight);
 		onChangeWeight(updatedWeight);
 	};
@@ -364,29 +390,24 @@ const WeightInput = ({
 		}
 	}
 
-	const isPlateViewAccurate = weight % 2.5 === 0;
+	const isPlateViewAccurate = weight % 1.25 === 0;
 
 	return (
 		<View className="mb-2">
-			<WeightTextInput
-				initialText={weight.toString()}
-				onBlurText={handleBlurText}
-			/>
-			<View
-				className={`mb-2 p-2 min-h-16 flex-row items-center justify-center border rounded-xl ${isPlateViewAccurate ? "border-transparent" : "border-red-300 bg-red-50"}`}
-			>
-				{leftPlates.reverse()}
-				{getPlateWeight(plateCounts) !== 0 && (
-					<View
-						className={`${isBarbellAdded ? "flex-1" : "w-6"} h-2.5 bg-slate-300 border-b-2 border-slate-400 border-t-2 border-t-slate-200`}
-					/>
-				)}
-				{rightPlates}
-			</View>
-			<View className="flex-row justify-around mb-2">
+			<View className="flex-row items-center mb-2">
+				<WeightTextInput
+					initialText={weight.toString()}
+					onBlurText={handleBlurText}
+				/>
+				<TouchableOpacity
+					onPress={handleOptimizePlates}
+					className="px-1 py-2 ml-2 rounded-lg border border-blue-700 bg-blue-600"
+				>
+					<Text className="text-2xl">✨</Text>
+				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={handleToggleBarbell}
-					className={`p-1 rounded-full border ${isBarbellAdded ? "bg-gray-300 border-gray-500" : "bg-gray-200 border-transparent"} justify-center`}
+					className={`px-1 py-2 ml-2 rounded-lg border ${isBarbellAdded ? "bg-gray-400 border-gray-600" : "bg-gray-200 border-transparent"}`}
 				>
 					{isBarbellAdded ? (
 						<Text className="text-2xl">🏋️</Text>
@@ -394,6 +415,19 @@ const WeightInput = ({
 						<Text className="text-2xl opacity-50">🏋️</Text>
 					)}
 				</TouchableOpacity>
+			</View>
+			<View
+				className={`mb-2 p-2 min-h-16 flex-row items-center justify-center border rounded-xl ${isPlateViewAccurate ? "border-transparent" : "border-red-300 bg-red-50"}`}
+			>
+				{leftPlates.reverse()}
+				{getPlateWeight(plateCounts) !== 0 && (
+					<View
+						className={`${isBarbellAdded ? "flex-1" : "w-6"} h-2.5 bg-slate-300 border-b-4 border-slate-400 border-t-2 border-t-slate-200`}
+					/>
+				)}
+				{rightPlates}
+			</View>
+			<View className="flex-row justify-around mb-2">
 				<PlateStepper
 					plateWeight={45}
 					onPlateAdded={() => handleAddPlate(45)}
