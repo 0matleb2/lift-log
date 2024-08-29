@@ -4,7 +4,7 @@
 		"slug": "lift-log",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"scheme": "myapp",
+		"scheme": "lift-log",
 		"userInterfaceStyle": "automatic",
 		"splash": {
 			"resizeMode": "contain",

@@ -7,7 +7,7 @@ import type { ExerciseSet } from "./models/ExerciseSet";
 
 interface Store {
 	exerciseSets: ExerciseSet[];
-	addExerciseSet: (lift: Omit<ExerciseSet, "id" | "date">) => void;
+	addExerciseSet: (exerciseSet: Omit<ExerciseSet, "id" | "date">) => void;
 }
 
 export const useStore = create<Store>()(
@@ -27,7 +27,7 @@ export const useStore = create<Store>()(
 				})),
 		}),
 		{
-			name: "exercise-set-stor2",
+			name: "exercise-set-storage",
 			storage: createJSONStorage(() => AsyncStorage),
 		},
 	),

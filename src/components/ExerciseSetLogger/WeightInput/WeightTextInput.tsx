@@ -10,35 +10,30 @@ const WeightTextInput = ({ initialText, onBlurText }: WeightTextInputProps) => {
 	const [text, setText] = useState(initialText);
 	const textInputRef = useRef<TextInput>(null);
 
-	const handleChangeText = (text: string) => {
-		setText(text);
-	};
-
-	const handleFocusInput = () => {
-		if (textInputRef.current) {
-			textInputRef.current.focus();
-		}
-	};
-
 	useEffect(() => {
 		setText(initialText);
 	}, [initialText]);
+
+	const handleFocusInput = () => {
+		textInputRef.current?.focus();
+	};
 
 	return (
 		<TouchableOpacity
 			className="flex-1 flex-row items-center bg-white rounded-lg p-3"
 			onPress={handleFocusInput}
+			activeOpacity={1}
 		>
 			<TextInput
 				ref={textInputRef}
 				keyboardType="numeric"
 				value={text}
-				onChangeText={handleChangeText}
+				onChangeText={setText}
 				onBlur={() => onBlurText(text)}
 				placeholder="Enter weight (lbs)"
-				className="flex-1 bg-white rounded-lg text-lg"
+				className="flex-1 bg-white rounded-lg text-xl font-semibold text-gray-800"
 			/>
-			<Text className="text-lg">lbs</Text>
+			<Text className="text-xl font-semibold text-gray-800">lbs</Text>
 		</TouchableOpacity>
 	);
 };
