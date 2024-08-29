@@ -3,7 +3,7 @@ import { Alert, View } from "react-native";
 import AddExerciseSetButton from "../components/AddExerciseSetButton";
 import ExerciseSelector from "../components/ExerciseSelector";
 import RepsStepper from "../components/RepsStepper";
-import WeightInput from "../components/WeightInput";
+import WeightInput from "../components/WeightInput/WeightInput";
 import ExerciseSetList from "../containers/ExerciseSetList";
 import type Exercise from "../models/Exercise";
 import { useStore } from "../store";
