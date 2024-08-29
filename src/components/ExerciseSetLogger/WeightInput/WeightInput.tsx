@@ -1,11 +1,11 @@
 import { useCallback, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import {
-	type PlateCount,
+	type PlateCounts,
 	type PlateWeight,
 	getPlateWeight,
 	plateWeights,
-} from "../../../types/plateUtils";
+} from "../../../models/Plate";
 import PlateDisplay from "./PlateDisplay";
 import PlateStepper from "./PlateStepper";
 import WeightTextInput from "./WeightTextInput";
@@ -32,7 +32,7 @@ const WeightInput = ({
 
 	const updateState = useCallback(
 		(
-			updatedPlateCounts: PlateCount,
+			updatedPlateCounts: PlateCounts,
 			updatedWeight: number,
 			barbellAdded: boolean,
 		) => {
@@ -59,7 +59,7 @@ const WeightInput = ({
 	};
 
 	const adjustPlate = (plateWeight: PlateWeight, delta: number) => {
-		const updatedPlateCounts: PlateCount = {
+		const updatedPlateCounts: PlateCounts = {
 			...plateCounts,
 			[plateWeight]: Math.max(plateCounts[plateWeight] + delta, 0),
 		};
@@ -119,10 +119,10 @@ const WeightInput = ({
 	);
 };
 
-const getOptimizedPlateCounts = (targetWeight: number): PlateCount => {
+const getOptimizedPlateCounts = (targetWeight: number): PlateCounts => {
 	let remainingWeight = Math.max(targetWeight, 0);
 
-	const plateCounts: PlateCount = {
+	const plateCounts: PlateCounts = {
 		45: 0,
 		35: 0,
 		25: 0,

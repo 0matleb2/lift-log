@@ -1,12 +1,12 @@
 import { View } from "react-native";
 import {
-	type PlateCount,
+	type PlateCounts,
 	type PlateWeight,
 	plateWeights,
-} from "../../../types/plateUtils";
+} from "../../../models/Plate";
 
 interface PlateDisplayProps {
-	plateCounts: PlateCount;
+	plateCounts: PlateCounts;
 	isAccurate: boolean;
 	isBarbellAdded: boolean;
 }

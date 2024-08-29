@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import type { PlateWeight } from "../../../types/plateUtils";
+import type { PlateWeight } from "../../../models/Plate";
 
 interface PlateStepperProps {
 	plateWeight: PlateWeight;
