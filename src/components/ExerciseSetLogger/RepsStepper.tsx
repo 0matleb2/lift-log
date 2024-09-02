@@ -1,4 +1,3 @@
-import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface RepsStepperProps {
@@ -9,7 +8,7 @@ interface RepsStepperProps {
 
 const RepsStepper = ({ reps, onIncrement, onDecrement }: RepsStepperProps) => {
 	return (
-		<View className="mb-4 flex-row items-center justify-center">
+		<View className="mt-2 bg-red-300 flex-row items-center justify-center">
 			<TouchableOpacity
 				onPress={onDecrement}
 				className="bg-white w-10 h-10 rounded-full justify-center items-center mr-3 border border-gray-300"

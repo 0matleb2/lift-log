@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { View, useColorScheme } from "react-native";
 import ExerciseSetLog from "../components/ExerciseSetLog/ExerciseSetLog";
 import AddExerciseSetButton from "../components/ExerciseSetLogger/AddExerciseSetButton";
-import ExerciseSelector from "../components/ExerciseSetLogger/ExerciseSelector";
+import ExerciseSelect from "../components/ExerciseSetLogger/ExerciseSelect/ExerciseSelect";
 import RepsStepper from "../components/ExerciseSetLogger/RepsStepper";
 import WeightInput from "../components/ExerciseSetLogger/WeightInput/WeightInput";
 import type Exercise from "../models/Exercise";
@@ -33,10 +33,15 @@ const HomeScreen = () => {
 	const incrementReps = () => setReps((prev) => Math.min(prev + 1, 20));
 	const decrementReps = () => setReps((prev) => Math.max(prev - 1, 1));
 
+	const colorScheme = useColorScheme();
+
+	const backgroundColorClasses =
+		colorScheme === "dark" ? "bg-background-dark" : "bg-background";
+
 	return (
 		<>
-			<View className="px-4 pt-8 pb-4 bg-gray-100">
-				<ExerciseSelector
+			<View className={`px-4 pt-8 pb-4 ${backgroundColorClasses}`}>
+				<ExerciseSelect
 					selectedExercise={selectedExercise}
 					onSelectExercise={setSelectedExercise}
 				/>

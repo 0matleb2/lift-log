@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, useColorScheme } from "react-native";
 import {
 	type PlateCounts,
 	type PlateWeight,
@@ -77,9 +77,12 @@ const PlateDisplay = ({
 		rightPlates.push(...renderedPlates.filter((_, index) => index % 2 !== 0));
 	}
 
+	const colorScheme = useColorScheme();
+	const isDarkMode = colorScheme === "dark";
+
 	return (
 		<View
-			className={`mb-2 p-2 min-h-16 flex-row items-center justify-center border rounded-xl ${
+			className={`mt-2 p-2 flex-row items-center justify-center border rounded-xl ${
 				isAccurate ? "border-transparent" : "border-red-300 bg-red-50"
 			}`}
 		>

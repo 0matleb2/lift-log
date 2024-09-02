@@ -1,11 +1,12 @@
 import { useCallback, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, useColorScheme } from "react-native";
 import {
 	type PlateCounts,
 	type PlateWeight,
 	getPlateWeight,
 	plateWeights,
 } from "../../../models/Plate";
+import StyledIcon from "../../StyledIcon";
 import PlateDisplay from "./PlateDisplay";
 import PlateStepper from "./PlateStepper";
 import WeightTextInput from "./WeightTextInput";
@@ -78,43 +79,86 @@ const WeightInput = ({
 		updateState(optimizedPlateCounts, parsedWeight, updatedIsBarbellAdded);
 	};
 
+	const colorScheme = useColorScheme();
+
+	const isDarkMode = colorScheme === "dark";
+
+	const optimizeButtonBackgroundColorClasses = isDarkMode
+		? "bg-secondary-button-background-dark"
+		: "bg-secondary-button-background";
+
+	const optimizeButtonTextColorClasses = isDarkMode
+		? "text-secondary-button-text-dark"
+		: "text-secondary-button-text";
+
+	const toggleBarbellButtonBackgroundColorClasses = isDarkMode
+		? isBarbellAdded
+			? "bg-toggle-button-background-on-dark"
+			: "bg-toggle-button-background-off-dark"
+		: isBarbellAdded
+			? "bg-toggle-button-background-on"
+			: "bg-toggle-button-background-off";
+
+	const toggleBarbellButtonTextColorClasses = isDarkMode
+		? isBarbellAdded
+			? "text-toggle-button-text-on-dark"
+			: "text-toggle-button-text-off-dark"
+		: isBarbellAdded
+			? "text-toggle-button-text-on"
+			: "text-toggle-button-text-off";
+
+	const toggleBarbellButtonBorderColorClasses = isDarkMode
+		? isBarbellAdded
+			? "border-toggle-button-border-on-dark"
+			: "border-toggle-button-border-off-dark"
+		: isBarbellAdded
+			? "border-toggle-button-border-on"
+			: "border-toggle-button-border-off";
+
 	return (
-		<View className="mb-2">
-			<View className="flex-row items-center mb-2">
+		<View>
+			<View className="flex-row items-center">
 				<WeightTextInput
 					initialText={weight.toString()}
 					onBlurText={handleBlurText}
 				/>
 				<TouchableOpacity
 					onPress={optimizePlates}
-					className="px-1 py-2 ml-2 rounded-lg border border-blue-700 bg-blue-600"
+					className={`p-2 ml-2 rounded-lg ${optimizeButtonBackgroundColorClasses}`}
 				>
-					<Text className="text-2xl">✨</Text>
+					<StyledIcon
+						name="sparkles"
+						size={24}
+						className={`${optimizeButtonTextColorClasses}`}
+					/>
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={toggleBarbell}
-					className={`px-1 py-2 ml-2 rounded-lg border ${isBarbellAdded ? "bg-gray-400 border-gray-600" : "bg-gray-200 border-transparent"}`}
+					className={`p-2 ml-2 rounded-lg border ${toggleBarbellButtonBackgroundColorClasses} ${toggleBarbellButtonBorderColorClasses}`}
 				>
-					<Text className={`text-2xl ${isBarbellAdded ? "" : "opacity-50"}`}>
-						🏋️
-					</Text>
+					<StyledIcon
+						name={isBarbellAdded ? "barbell" : "barbell-outline"}
+						size={24}
+						className={`${toggleBarbellButtonTextColorClasses}`}
+					/>
 				</TouchableOpacity>
 			</View>
-			<PlateDisplay
-				plateCounts={plateCounts}
-				isAccurate={weight % 1.25 === 0}
-				isBarbellAdded={isBarbellAdded}
-			/>
-			<View className="flex-row justify-around mb-2">
+			<View className="flex-row justify-around mt-2">
 				{plateWeights.map((plateWeight) => (
 					<PlateStepper
 						key={plateWeight}
 						plateWeight={plateWeight}
 						onPlateAdded={() => adjustPlate(plateWeight, 1)}
 						onPlateRemoved={() => adjustPlate(plateWeight, -1)}
+						isSubtractDisabled={plateCounts[plateWeight] === 0}
 					/>
 				))}
 			</View>
+			<PlateDisplay
+				plateCounts={plateCounts}
+				isAccurate={weight % 1.25 === 0}
+				isBarbellAdded={isBarbellAdded}
+			/>
 		</View>
 	);
 };

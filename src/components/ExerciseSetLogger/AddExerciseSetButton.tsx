@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, useColorScheme } from "react-native";
 
 interface AddExerciseSetButtonProps {
 	onPress: () => void;
@@ -9,20 +9,31 @@ const AddExerciseSetButton = ({
 	onPress,
 	disabled,
 }: AddExerciseSetButtonProps) => {
+	const colorScheme = useColorScheme();
+
+	let backgroundColorClasses = disabled
+		? "bg-primary-button-disabled"
+		: "bg-primary-button";
+	let textColorClasses = disabled
+		? "text-primary-button-disabled"
+		: "text-primary-button";
+
+	if (colorScheme === "dark") {
+		backgroundColorClasses = disabled
+			? "bg-primary-button-dark-disabled"
+			: "bg-primary-button-dark";
+		textColorClasses = disabled
+			? "text-primary-button-dark-disabled"
+			: "text-primary-button-dark";
+	}
+
 	return (
 		<TouchableOpacity
 			onPress={onPress}
 			disabled={disabled}
-			style={{
-				backgroundColor: disabled ? "#A5B4FC" : "#1E40AF", // Lighter color when disabled
-				paddingVertical: 12,
-				borderRadius: 8,
-				alignItems: "center",
-			}}
+			className={`mt-2 py-3 rounded-lg items-center ${backgroundColorClasses} ${textColorClasses}`}
 		>
-			<Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
-				Add Exercise Set
-			</Text>
+			<Text className="text-white text-lg font-bold">Add Exercise Set</Text>
 		</TouchableOpacity>
 	);
 };
