@@ -69,7 +69,7 @@ const RepsStepper = ({
 				/>
 			</TouchableOpacity>
 
-			<Text className={`text-xl font-semibold ${repsTextColorClasses}`}>
+			<Text className={`text-xl px-2 font-semibold ${repsTextColorClasses}`}>
 				{reps} {reps === 1 ? "rep" : "reps"}
 			</Text>
 

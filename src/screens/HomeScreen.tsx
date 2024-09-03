@@ -39,8 +39,8 @@ const HomeScreen = () => {
 		colorScheme === "dark" ? "bg-background-dark" : "bg-background";
 
 	return (
-		<>
-			<View className={`px-4 pt-8 pb-4 ${backgroundColorClasses}`}>
+		<View className={`flex-1 pt-4 ${backgroundColorClasses}`}>
+			<View className={"px-4"}>
 				<ExerciseSelect
 					selectedExercise={selectedExercise}
 					onSelectExercise={setSelectedExercise}
@@ -48,17 +48,15 @@ const HomeScreen = () => {
 
 				<WeightInput onChangeWeight={setWeight} />
 
-				<View className="mt-2 flex-row items-center justify-center">
-					<View className="">
-						<RepsStepper
-							reps={reps}
-							onIncrement={incrementReps}
-							onDecrement={decrementReps}
-							isIncrementDisabled={reps >= 100}
-							isDecrementDisabled={reps <= 1}
-						/>
-					</View>
-					<View className="ml-2 flex-1">
+				<View className="mt-4 flex-row items-center justify-center">
+					<RepsStepper
+						reps={reps}
+						onIncrement={incrementReps}
+						onDecrement={decrementReps}
+						isIncrementDisabled={reps >= 100}
+						isDecrementDisabled={reps <= 1}
+					/>
+					<View className="flex-1 ml-4">
 						<AddExerciseSetButton
 							onPress={handleAddExerciseSet}
 							disabled={!isFormComplete}
@@ -66,8 +64,10 @@ const HomeScreen = () => {
 					</View>
 				</View>
 			</View>
-			<ExerciseSetLog />
-		</>
+			<View className={`flex-1 mt-4`}>
+				<ExerciseSetLog />
+			</View>
+		</View>
 	);
 };
 

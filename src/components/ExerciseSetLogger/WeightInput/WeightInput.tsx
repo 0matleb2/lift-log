@@ -117,7 +117,7 @@ const WeightInput = ({
 
 	return (
 		<View>
-			<View className="flex-row items-center">
+			<View className="flex-row items-center mt-4">
 				<WeightTextInput
 					initialText={weight.toString()}
 					onBlurText={handleBlurText}
@@ -143,7 +143,7 @@ const WeightInput = ({
 					/>
 				</TouchableOpacity>
 			</View>
-			<View className="flex-row justify-around mt-2">
+			<View className="flex-row justify-around mt-4">
 				{plateWeights.map((plateWeight) => (
 					<PlateStepper
 						key={plateWeight}
@@ -154,11 +154,15 @@ const WeightInput = ({
 					/>
 				))}
 			</View>
-			<PlateDisplay
-				plateCounts={plateCounts}
-				isAccurate={weight % 1.25 === 0}
-				isBarbellAdded={isBarbellAdded}
-			/>
+			{getPlateWeight(plateCounts) > 0 && (
+				<View className="mt-4">
+					<PlateDisplay
+						plateCounts={plateCounts}
+						isAccurate={weight % 1.25 === 0}
+						isBarbellAdded={isBarbellAdded}
+					/>
+				</View>
+			)}
 		</View>
 	);
 };

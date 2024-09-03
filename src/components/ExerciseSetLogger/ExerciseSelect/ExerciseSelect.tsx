@@ -22,7 +22,7 @@ const ExerciseSelect = ({
 		colorScheme === "dark" ? "text-title-text-dark" : "text-title-text";
 
 	return (
-		<View className="mb-2">
+		<View className="mt-4">
 			<Text className={`text-lg font-semibold ${titleTextColorClasses} mb-2`}>
 				{selectedExercise ? "Selected Exercise:" : "Select Exercise:"}
 			</Text>

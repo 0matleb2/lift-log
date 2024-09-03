@@ -149,13 +149,13 @@ const PlateDisplay = ({
 
 	return (
 		<View
-			className={`relative mt-2 p-2 flex-row items-center justify-center rounded-lg ${plateDisplayBackgroundColorClasses}`}
+			className={`p-2 flex-row items-center justify-center rounded-lg ${plateDisplayBackgroundColorClasses}`}
 		>
 			{!isAccurate && (
-				<View className="absolute z-10 mb-12">
+				<View className="absolute z-10 top-1">
 					<StyledIcon
 						name="warning"
-						size={32}
+						size={26}
 						className={warningColorClasses}
 					/>
 				</View>
