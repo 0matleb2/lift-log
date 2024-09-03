@@ -18,19 +18,41 @@ module.exports = {
 				},
 				"primary-button": {
 					background: {
-						DEFAULT: "#B0C4DE", // Soft Blue (Light Mode)
-						dark: "#334E68", // Dark Soft Blue (Dark Mode)
+						DEFAULT: "#3B82F6", // Blue 500 (Light Mode)
+						dark: "#2563EB", // Blue 600 (Dark Mode)
 						disabled: {
-							DEFAULT: "#D1D5DB", // Lighter Soft Blue (Disabled Light Mode)
-							dark: "#718096", // Muted Dark Blue (Disabled Dark Mode)
+							DEFAULT: "#93C5FD", // Light Blue 300 (Disabled Light Mode)
+							dark: "#374151", // Slate 600 (Muted Slate for Disabled Dark Mode)
 						},
 					},
 					text: {
-						DEFAULT: "#5F7689", // Muted Navy (Light Mode Text)
-						dark: "#D1D5DB", // Cool Gray (Dark Mode Text)
+						DEFAULT: "#FFFFFF", // White (Light Mode Text)
+						dark: "#E5E7EB", // Light Gray (Dark Mode Text)
+						disabled: {
+							DEFAULT: "#9CA3AF", // Cool Gray 400 (Muted Gray for Disabled Light Mode)
+							dark: "#6B7280", // Slate 500 (Subtle Slate for Disabled Dark Mode Text)
+						},
 					},
 				},
 				"secondary-button": {
+					background: {
+						DEFAULT: "#D1D5DB", // Slightly Darker Gray (Light Mode Active)
+						dark: "#374151", // Slightly Lighter Dark Gray (Dark Mode Active)
+						disabled: {
+							DEFAULT: "#F7FAFC", // Very Light Gray (Light Mode Disabled)
+							dark: "#2D3748", // Much Darker Gray (Dark Mode Disabled)
+						},
+					},
+					text: {
+						DEFAULT: "#111827", // Almost Black (Light Mode Active Text)
+						dark: "#F9FAFB", // Near White (Dark Mode Active Text)
+						disabled: {
+							DEFAULT: "#9CA3AF", // Muted Gray (Light Mode Disabled Text)
+							dark: "#4B5563", // Darker Gray (Dark Mode Disabled Text)
+						},
+					},
+				},
+				"optimize-button": {
 					background: {
 						DEFAULT: "#F4C77B", // Warm Gold (Light Mode, adjusted for better contrast)
 						dark: "#8D6B3B", // Rich Brown (Dark Mode, matching overall palette)
@@ -76,44 +98,6 @@ module.exports = {
 						},
 					},
 				},
-				"stepper-button": {
-					add: {
-						background: {
-							DEFAULT: "#D1D5DB", // Slightly Darker Gray (Light Mode Active)
-							dark: "#374151", // Slightly Lighter Dark Gray (Dark Mode Active)
-							disabled: {
-								DEFAULT: "#F3F4F6", // Much Lighter Gray (Light Mode Disabled)
-								dark: "#2D3748", // Much Darker Gray (Dark Mode Disabled)
-							},
-						},
-						text: {
-							DEFAULT: "#111827", // Almost Black (Light Mode Active Text)
-							dark: "#F9FAFB", // Near White (Dark Mode Active Text)
-							disabled: {
-								DEFAULT: "#9CA3AF", // Muted Gray (Light Mode Disabled Text)
-								dark: "#4B5563", // Darker Gray (Dark Mode Disabled Text)
-							},
-						},
-					},
-					subtract: {
-						background: {
-							DEFAULT: "#E5E7EB", // Light Gray (Light Mode Active)
-							dark: "#4B5563", // Dark Gray (Dark Mode Active)
-							disabled: {
-								DEFAULT: "#F7FAFC", // Very Light Gray (Light Mode Disabled)
-								dark: "#2D3748", // Much Darker Gray (Dark Mode Disabled)
-							},
-						},
-						text: {
-							DEFAULT: "#333333", // Charcoal Gray (Light Mode Active Text)
-							dark: "#D1D5DB", // Cool Gray (Dark Mode Active Text)
-							disabled: {
-								DEFAULT: "#9CA3AF", // Muted Gray (Light Mode Disabled Text)
-								dark: "#4B5563", // Darker Gray (Dark Mode Disabled Text)
-							},
-						},
-					},
-				},
 				"title-text": {
 					DEFAULT: "#1E3A8A", // Indigo (Light Mode)
 					dark: "#A5B4FC", // Light Indigo (Dark Mode)
@@ -125,6 +109,10 @@ module.exports = {
 				"secondary-text": {
 					DEFAULT: "#666666", // Slate Gray (Light Mode)
 					dark: "#A0AEC0", // Lighter Slate Gray (Dark Mode)
+				},
+				"warning-text": {
+					DEFAULT: "#FBBF24", // Amber 400 (Light Mode)
+					dark: "#F59E0B", // Amber 500 (Dark Mode)
 				},
 				accent: {
 					pink: {
@@ -171,7 +159,7 @@ module.exports = {
 				plate: {
 					45: {
 						DEFAULT: "#3B82F6", // Blue 500
-						dark: "#1E3A8A", // Darker Blue for dark mode
+						dark: "#2C5282", // Adjusted Darker Blue for dark mode (Blue 600)
 						highlight: {
 							DEFAULT: "#60A5FA", // Blue 400
 							dark: "#1D4ED8", // Blue 700
@@ -207,10 +195,10 @@ module.exports = {
 					},
 					10: {
 						DEFAULT: "#F9FAFB", // Gray 50
-						dark: "#E5E7EB", // Darker Gray for dark mode
+						dark: "#CBD5E1", // Adjusted Darker Gray for dark mode (Gray 400)
 						highlight: {
 							DEFAULT: "#F3F4F6", // Gray 200
-							dark: "#9CA3AF", // Gray 400
+							dark: "#9CA3AF", // Gray 500
 						},
 						shadow: {
 							DEFAULT: "#D1D5DB", // Gray 300
@@ -219,7 +207,7 @@ module.exports = {
 					},
 					5: {
 						DEFAULT: "#3B82F6", // Blue 500
-						dark: "#1E3A8A", // Darker Blue for dark mode
+						dark: "#2C5282", // Adjusted Darker Blue for dark mode (Blue 600)
 						highlight: {
 							DEFAULT: "#60A5FA", // Blue 400
 							dark: "#1D4ED8", // Blue 700
@@ -243,15 +231,27 @@ module.exports = {
 					},
 					"1_25": {
 						DEFAULT: "#F9FAFB", // Gray 50
-						dark: "#E5E7EB", // Darker Gray for dark mode
+						dark: "#CBD5E1", // Adjusted Darker Gray for dark mode (Gray 400)
 						highlight: {
 							DEFAULT: "#F3F4F6", // Gray 200
-							dark: "#9CA3AF", // Gray 400
+							dark: "#9CA3AF", // Gray 500
 						},
 						shadow: {
 							DEFAULT: "#D1D5DB", // Gray 300
 							dark: "#6B7280", // Gray 600
 						},
+					},
+				},
+				barbell: {
+					DEFAULT: "#E0E0E0", // Light Stainless Steel Gray
+					dark: "#AAB4BE", // Lighter Stainless Steel for dark mode
+					highlight: {
+						DEFAULT: "#ECEFF1", // Very Light Stainless Steel Gray
+						dark: "#CFD8DC", // Light Gray for dark mode
+					},
+					shadow: {
+						DEFAULT: "#B0BEC5", // Slightly Darker Stainless Steel
+						dark: "#78909C", // Darker Gray for dark mode
 					},
 				},
 			},

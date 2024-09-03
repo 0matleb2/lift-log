@@ -25,35 +25,35 @@ const PlateStepper = ({
 
 	const addStepperBackgroundColorClasses = isDarkMode
 		? isAddDisabled
-			? "bg-stepper-button-add-background-disabled-dark"
-			: "bg-stepper-button-add-background-dark"
+			? "bg-secondary-button-background-disabled-dark"
+			: "bg-secondary-button-background-dark"
 		: isAddDisabled
-			? "bg-stepper-button-add-background-disabled"
-			: "bg-stepper-button-add-background";
+			? "bg-secondary-button-background-disabled"
+			: "bg-secondary-button-background";
 
 	const addStepperTextColorClasses = isDarkMode
 		? isAddDisabled
-			? "text-stepper-button-add-text-disabled-dark"
-			: "text-stepper-button-add-text-dark"
+			? "text-secondary-button-text-disabled-dark"
+			: "text-secondary-button-text-dark"
 		: isAddDisabled
-			? "text-stepper-button-add-text-disabled"
-			: "text-stepper-button-add-text";
+			? "text-secondary-button-text-disabled"
+			: "text-secondary-button-text";
 
 	const subtractStepperBackgroundColorClasses = isDarkMode
 		? isSubtractDisabled
-			? "bg-stepper-button-subtract-background-disabled-dark"
-			: "bg-stepper-button-subtract-background-dark"
+			? "bg-secondary-button-background-disabled-dark"
+			: "bg-secondary-button-background-dark"
 		: isSubtractDisabled
-			? "bg-stepper-button-subtract-background-disabled"
-			: "bg-stepper-button-subtract-background";
+			? "bg-secondary-button-background-disabled"
+			: "bg-secondary-button--background";
 
 	const subtractStepperTextColorClasses = isDarkMode
 		? isSubtractDisabled
-			? "text-stepper-button-subtract-text-disabled-dark"
-			: "text-stepper-button-subtract-text-dark"
+			? "text-secondary-button-text-disabled-dark"
+			: "text-secondary-button-text-dark"
 		: isSubtractDisabled
-			? "text-stepper-button-subtract-text-disabled"
-			: "text-stepper-button-subtract-text";
+			? "text-secondary-button-text-disabled"
+			: "text-secondary-button-text";
 
 	const plateClassMap = {
 		45: { light: "bg-plate-45", dark: "bg-plate-45-dark" },

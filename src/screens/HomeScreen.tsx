@@ -14,7 +14,7 @@ const HomeScreen = () => {
 	const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
 		null,
 	);
-	const [weight, setWeight] = useState<number | null>(null);
+	const [weight, setWeight] = useState<number | null>(0);
 	const [reps, setReps] = useState<number>(8);
 
 	const handleAddExerciseSet = () => {
@@ -30,8 +30,8 @@ const HomeScreen = () => {
 	const isFormComplete =
 		selectedExercise !== null && weight !== null && reps > 0;
 
-	const incrementReps = () => setReps((prev) => Math.min(prev + 1, 20));
-	const decrementReps = () => setReps((prev) => Math.max(prev - 1, 1));
+	const incrementReps = () => setReps((prev) => prev + 1);
+	const decrementReps = () => setReps((prev) => prev - 1);
 
 	const colorScheme = useColorScheme();
 
@@ -48,16 +48,23 @@ const HomeScreen = () => {
 
 				<WeightInput onChangeWeight={setWeight} />
 
-				<RepsStepper
-					reps={reps}
-					onIncrement={incrementReps}
-					onDecrement={decrementReps}
-				/>
-
-				<AddExerciseSetButton
-					onPress={handleAddExerciseSet}
-					disabled={!isFormComplete}
-				/>
+				<View className="mt-2 flex-row items-center justify-center">
+					<View className="">
+						<RepsStepper
+							reps={reps}
+							onIncrement={incrementReps}
+							onDecrement={decrementReps}
+							isIncrementDisabled={reps >= 100}
+							isDecrementDisabled={reps <= 1}
+						/>
+					</View>
+					<View className="ml-2 flex-1">
+						<AddExerciseSetButton
+							onPress={handleAddExerciseSet}
+							disabled={!isFormComplete}
+						/>
+					</View>
+				</View>
 			</View>
 			<ExerciseSetLog />
 		</>

@@ -84,12 +84,12 @@ const WeightInput = ({
 	const isDarkMode = colorScheme === "dark";
 
 	const optimizeButtonBackgroundColorClasses = isDarkMode
-		? "bg-secondary-button-background-dark"
-		: "bg-secondary-button-background";
+		? "bg-optimize-button-background-dark"
+		: "bg-optimize-button-background";
 
 	const optimizeButtonTextColorClasses = isDarkMode
-		? "text-secondary-button-text-dark"
-		: "text-secondary-button-text";
+		? "text-optimize-button-text-dark"
+		: "text-optimize-button-text";
 
 	const toggleBarbellButtonBackgroundColorClasses = isDarkMode
 		? isBarbellAdded
